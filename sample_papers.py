@@ -40,6 +40,9 @@ CONFERENCES: List[ConferenceId] = [
     ("acl", 2017),
     ("acl", 2018),
     ("acl", 2019),
+    ("cvpr", 2017),
+    ("cvpr", 2018),
+    ("cvpr", 2019),
 ]
 
 

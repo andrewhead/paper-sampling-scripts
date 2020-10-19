@@ -1,0 +1,172 @@
+Reading conference data from  data/neurips-2017.json
+Loaded data for 679 papers for conference neurips-2017
+Reading conference data from  data/neurips-2018-1.json
+Reading conference data from  data/neurips-2018-2.json
+Loaded data for 1011 papers for conference neurips-2018
+Reading conference data from  data/neurips-2019-2.json
+Reading conference data from  data/neurips-2019-1.json
+Loaded data for 1428 papers for conference neurips-2019
+Reading conference data from  data/icml-2017.json
+Loaded data for 435 papers for conference icml-2017
+Reading conference data from  data/icml-2018.json
+Loaded data for 622 papers for conference icml-2018
+Reading conference data from  data/icml-2019.json
+Loaded data for 775 papers for conference icml-2019
+Reading conference data from  data/acl-2017.json
+Loaded data for 357 papers for conference acl-2017
+Reading conference data from  data/acl-2018.json
+Loaded data for 440 papers for conference acl-2018
+Reading conference data from  data/acl-2019.json
+Loaded data for 767 papers for conference acl-2019
+Reading conference data from  data/cvpr-2017.json
+Loaded data for 784 papers for conference cvpr-2017
+Reading conference data from  data/cvpr-2018.json
+Loaded data for 980 papers for conference cvpr-2018
+Reading conference data from  data/cvpr-2019-1.json
+Reading conference data from  data/cvpr-2019-2.json
+Loaded data for 1295 papers for conference cvpr-2019
+
+Papers sampled for neurips-2017:
+'Scalable Demand-Aware Recommendation.' (9 pages)
+'Adaptive stimulus selection for optimizing neural population responses.' (10 pages)
+'Submultiplicative Glivenko-Cantelli and Uniform Convergence of Revenues.' (9 pages)
+'Straggler Mitigation in Distributed Optimization Through Data Encoding.' (8 pages)
+'Multimodal Learning and Reasoning for Visual Question Answering.' (11 pages)
+'Learning Linear Dynamical Systems via Spectral Filtering.' (10 pages)
+'Learning to Prune Deep Neural Networks via Layer-wise Optimal Brain Surgeon.' (10 pages)
+'Near-Optimal Edge Evaluation in Explicit Generalized Binomial Graphs.' (10 pages)
+'Safe Adaptive Importance Sampling.' (10 pages)
+'Alternating Estimation for Structured High-Dimensional Multi-Response Models.' (10 pages)
+
+Papers sampled for neurips-2018:
+'Modelling sparsity, heterogeneity, reciprocity and community structure in temporal interaction data.' (9 pages)
+'Sequential Test for the Lowest Mean - From Thompson to Murphy Sampling.' (10 pages)
+'A Reduction for Efficient LDA Topic Reconstruction.' (10 pages)
+'NEON2 - Finding Local Minima via First-Order Oracles.' (10 pages)
+(Error: could not parse number of pages for 'Universal Growth in Production Economies.')
+'Adversarial Examples that Fool both Computer Vision and Time-Limited Humans.' (10 pages)
+'Do Less, Get More - Streaming Submodular Maximization with Subsampling.' (10 pages)
+'Adding One Neuron Can Eliminate All Bad Local Minima.' (10 pages)
+'Non-metric Similarity Graphs for Maximum Inner Product Search.' (9 pages)
+'The Convergence of Sparsified Gradient Methods.' (10 pages)
+
+Papers sampled for neurips-2019:
+'Thinning for Accelerating the Learning of Point Processes.' (10 pages)
+'Devign - Effective Vulnerability Identification by Learning Comprehensive Program Semantics via Graph Neural Networks.' (10 pages)
+'Dual Adversarial Semantics-Consistent Network for Generalized Zero-Shot Learning.' (11 pages)
+'Hyperparameter Learning via Distributional Transfer.' (11 pages)
+'Expressive power of tensor-network factorizations for probabilistic modeling.' (12 pages)
+'Learning from brains how to regularize machines.' (10 pages)
+'Hindsight Credit Assignment.' (9 pages)
+'The continuous Bernoulli - fixing a pervasive error in variational autoencoders.' (10 pages)
+'Equal Opportunity in Online Classification with Partial Feedback.' (10 pages)
+'An Inexact Augmented Lagrangian Framework for Nonconvex Optimization with Nonlinear Constraints.' (12 pages)
+
+Papers sampled for icml-2017:
+'Source-Target Similarity Modelings for Multi-Source Transfer Gaussian Process Regression.' (9 pages)
+'Latent LSTM Allocation - Joint Clustering and Non-Linear Dynamic Modeling of Sequence Data.' (9 pages)
+'Adaptive Multiple-Arm Identification.' (8 pages)
+'Accelerating Eulerian Fluid Simulation With Convolutional Networks.' (9 pages)
+'Learning to Align the Source Code to the Compiled Object Code.' (8 pages)
+'Scalable Generative Models for Multi-label Learning with Missing Labels.' (8 pages)
+'On Calibration of Modern Neural Networks.' (9 pages)
+'Combining Model-Based and Model-Free Updates for Trajectory-Centric Reinforcement Learning.' (8 pages)
+'Being Robust (in High Dimensions) Can Be Practical.' (9 pages)
+'Unifying Task Specification in Reinforcement Learning.' (8 pages)
+
+Papers sampled for icml-2018:
+'Gradient Descent for Sparse Rank-One Matrix Completion for Crowd-Sourced Aggregation of Sparsely Interacting Workers.' (9 pages)
+'Stochastic Training of Graph Convolutional Networks with Variance Reduction.' (8 pages)
+'Stein Points.' (9 pages)
+'On Learning Sparsely Used Dictionaries from Incomplete Samples.' (9 pages)
+'Variational Inference and Model Selection with Generalized Evidence Bounds.' (9 pages)
+'Differentiable plasticity - training plastic neural networks with backpropagation.' (9 pages)
+'Fast Approximate Spectral Clustering for Dynamic Networks.' (9 pages)
+'Racing Thompson - an Efficient Algorithm for Thompson Sampling with Non-conjugate Priors.' (8 pages)
+'Convergence guarantees for a class of non-convex and non-smooth optimization problems.' (9 pages)
+'A Boo(n) for Evaluating Architecture Performance.' (8 pages)
+
+Papers sampled for icml-2019:
+'Random Function Priors for Correlation Modeling.' (9 pages)
+'Parsimonious Black-Box Adversarial Attacks via Efficient Combinatorial Optimization.' (9 pages)
+'Almost Unsupervised Text to Speech and Automatic Speech Recognition.' (9 pages)
+'RaFM - Rank-Aware Factorization Machines.' (8 pages)
+'MONK Outlier-Robust Mean Embedding Estimation by Median-of-Means.' (11 pages)
+'Rethinking Lossy Compression - The Rate-Distortion-Perception Tradeoff.' (10 pages)
+'White-box vs Black-box - Bayes Optimal Strategies for Membership Inference.' (9 pages)
+'Causal Discovery and Forecasting in Nonstationary Environments with State-Space Models.' (9 pages)
+'Sublinear Space Private Algorithms Under the Sliding Window Model.' (9 pages)
+'Random Matrix Improved Covariance Estimation for a Large Class of Metrics.' (9 pages)
+
+Papers sampled for acl-2017:
+'Learning to Generate Market Comments from Stock Prices.' (10 pages)
+'Negotiation of Antibiotic Treatment in Medical Consultations - A Corpus Based Study.' (7 pages)
+'On the Equivalence of Holographic and Complex Embeddings for Link Prediction.' (5 pages)
+'Context Sensitive Lemmatization Using Two Successive Bidirectional Gated Recurrent Networks.' (10 pages)
+'Learning attention for historical text normalization by learning to pronounce.' (12 pages)
+'Word Embedding for Response-To-Text Assessment of Evidence.' (6 pages)
+'Improving Distributed Representations of Tweets - Present and Future.' (6 pages)
+'MalwareTextDB - A Database for Annotated Malware Articles.' (10 pages)
+'Automatically Labeled Data Generation for Large Scale Event Extraction.' (10 pages)
+'Understanding Task Design Trade-offs in Crowdsourced Paraphrase Collection.' (6 pages)
+
+Papers sampled for acl-2018:
+'Composing Finite State Transducers on GPUs.' (8 pages)
+'Supervised Treebank Conversion - Data and Approaches.' (10 pages)
+'Diachronic degradation of language models - Insights from social media.' (5 pages)
+'A Corpus with Multi-Level Annotations of Patients, Interventions and Outcomes to Support Language Processing for Medical Literature.' (10 pages)
+'TDNN - A Two-stage Deep Neural Network for Prompt-independent Automated Essay Scoring.' (9 pages)
+'Discourse Marker Augmented Network with Reinforcement Learning for Natural Language Inference.' (10 pages)
+'Towards Robust and Privacy-preserving Text Representations.' (5 pages)
+'Marrying Up Regular Expressions with Neural Networks - A Case Study for Spoken Language Understanding.' (10 pages)
+'Retrieve, Rerank and Rewrite - Soft Template Based Neural Summarization.' (9 pages)
+'Global Transition-based Non-projective Dependency Parsing.' (11 pages)
+
+Papers sampled for acl-2019:
+'Yes, we can! Mining Arguments in 50 Years of US Presidential Campaign Debates.' (6 pages)
+'Simple and Effective Text Matching with Richer Alignment Features.' (10 pages)
+'Unsupervised Learning of PCFGs with Normalizing Flow.' (10 pages)
+'Joint Slot Filling and Intent Detection via Capsule Neural Networks.' (8 pages)
+'SParC - Cross-Domain Semantic Parsing in Context.' (12 pages)
+'Lattice-Based Transformer Encoder for Neural Machine Translation.' (7 pages)
+'Observing Dialogue in Therapy - Categorizing and Forecasting Behavioral Codes.' (12 pages)
+'SphereRE - Distinguishing Lexical Relations with Hyperspherical Relation Embeddings.' (10 pages)
+'Morphological Irregularity Correlates with Frequency.' (9 pages)
+'Inducing Document Structure for Aspect-based Summarization.' (10 pages)
+
+Papers sampled for cvpr-2017:
+'Deep Video Deblurring for Hand-Held Cameras.' (9 pages)
+'Multi-task Correlation Particle Filter for Robust Object Tracking.' (8 pages)
+'Active Convolution - Learning the Shape of Convolution for Image Classification.' (8 pages)
+'ActionVLAD - Learning Spatio-Temporal Aggregation for Action Classification.' (9 pages)
+'Accurate Single Stage Detector Using Recurrent Rolling Convolution.' (8 pages)
+'Forecasting Interactive Dynamics of Pedestrians with Fictitious Play.' (8 pages)
+'Fine-Grained Recognition of Thousands of Object Categories with Single-Example Training.' (9 pages)
+'Learning Barycentric Representations of 3D Shapes for Sketch-Based 3D Shape Retrieval.' (8 pages)
+'Multi-level Attention Networks for Visual Question Answering.' (8 pages)
+'Saliency Revisited - Analysis of Mouse Movements Versus Fixations.' (8 pages)
+
+Papers sampled for cvpr-2018:
+'Geometry Guided Convolutional Neural Networks for Self-Supervised Video Representation Learning.' (8 pages)
+'Feature Super-Resolution - Make Machine See More Clearly.' (8 pages)
+'Learning to Extract a Video Sequence From a Single Motion-Blurred Image.' (8 pages)
+'Robust Classification With Convolutional Prototype Learning.' (8 pages)
+'Weakly-Supervised Semantic Segmentation by Iteratively Mining Common Object Features.' (8 pages)
+'Modulated Convolutional Networks.' (8 pages)
+'Modeling Facial Geometry Using Compositional VAEs.' (9 pages)
+'Unsupervised Training for 3D Morphable Model Regression.' (9 pages)
+'Deep Texture Manifold for Ground Terrain Recognition.' (9 pages)
+'Occlusion Aware Unsupervised Learning of Optical Flow.' (9 pages)
+
+Papers sampled for cvpr-2019:
+'Beyond Gradient Descent for Regularized Segmentation Losses.' (9 pages)
+'Cycle-Consistency for Robust Visual Question Answering.' (9 pages)
+'Collaborative Spatiotemporal Feature Learning for Video Action Recognition.' (9 pages)
+'BeautyGlow - On-Demand Makeup Transfer Framework With Reversible Generative Network.' (8 pages)
+'Grounding Human-To-Vehicle Advice for Self-Driving Vehicles.' (8 pages)
+'Enhanced Bayesian Compression via Deep Reinforcement Learning.' (9 pages)
+'Mode Seeking Generative Adversarial Networks for Diverse Image Synthesis.' (8 pages)
+'Variational Prototyping-Encoder - One-Shot Learning With Prototypical Images.' (8 pages)
+'Semi-Supervised Transfer Learning for Image Rain Removal.' (9 pages)
+'From Coarse to Fine - Robust Hierarchical Localization at Large Scale.' (9 pages)
+
