@@ -5,12 +5,24 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Extract papers",
+            "name": "Extract paper IDs from Semantic Scholar corpus",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/extract_papers_for_conferences.py",
             "args": [
                 "data/*.gz"
+            ]
+        },
+        {
+            "name": "Sample paper IDs by conference",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/sample_papers.py",
+            "args": [
+                "--min-citation-velocity",
+                "10",
+                "--papers-per-conference",
+                "2"
             ]
         }
     ]

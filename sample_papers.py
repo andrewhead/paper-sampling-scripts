@@ -9,7 +9,7 @@ from typing import Any, Dict, Iterator, List
 
 import requests
 
-from .common import CONFERENCE_IDS_DIR, OUTPUT_DIR
+from common import CONFERENCE_IDS_DIR, OUTPUT_DIR
 
 
 @dataclass(frozen=True)
@@ -22,7 +22,7 @@ class Paper:
 
 # Semantic Scholar requests that no more than 100 requests be made to the API every 5 minutes
 # from a single IP address.
-SEMANTIC_SCHOLAR_REQUEST_DELAY = 200  # milliseconds
+SEMANTIC_SCHOLAR_REQUEST_DELAY = 0.2  # seconds
 
 
 def fetch_paper_details(
@@ -41,30 +41,41 @@ def fetch_paper_details(
         if first_request:
             first_request = False
 
-        if response.ok:
-            paper_json = response.json()
+        if not response.ok:
+            if verbose:
+                print(
+                    f"Failed to fetch data from Semantic Scholar for paper {id_}: {response}"
+                )
+            continue
 
-            if paper_json["arxivId"] is None:
-                if verbose:
-                    print(
-                        f"Semantic Scholar does not have an arXiv ID for {id_}. "
-                        + "Paper will not be sampled."
-                    )
-                continue
-            if paper_json["citationVelocity"] < min_citation_velocity:
-                if verbose:
-                    print(
-                        f"Paper {id_} has a low citation velocity ({paper_json['citationVelocity']}"
-                        + f"< {min_citation_velocity}). Paper will not be sampled."
-                    )
-                continue
+        paper_json = response.json()
 
-            yield Paper(
-                id_=id_,
-                title=paper_json["title"],
-                arxiv_id=paper_json["arxivId"],
-                arxiv_link=f"https://arxiv.org/pdf/{paper_json['arxivId']}.pdf",
+        if paper_json["arxivId"] is None:
+            if verbose:
+                print(
+                    f"Semantic Scholar does not have an arXiv ID for {id_}. "
+                    + "Paper will not be sampled."
+                )
+            continue
+        if paper_json["citationVelocity"] < min_citation_velocity:
+            if verbose:
+                print(
+                    f"Paper {id_} has a low citation velocity ({paper_json['citationVelocity']} "
+                    + f"< {min_citation_velocity}). Paper will not be sampled."
+                )
+            continue
+
+        if verbose:
+            print(
+                f"Fetched paper '{paper_json['title']}'' ({id_}) which satisfies all criteria "
+                + "for inclusion in the sample."
             )
+        yield Paper(
+            id_=id_,
+            title=paper_json["title"],
+            arxiv_id=paper_json["arxivId"],
+            arxiv_link=f"https://arxiv.org/pdf/{paper_json['arxivId']}.pdf",
+        )
 
 
 if __name__ == "__main__":
@@ -100,7 +111,6 @@ if __name__ == "__main__":
             + "sample made previously, or to request a different sample than what was sampled before."
         ),
     )
-    argument_parser.add_argument()
     args = argument_parser.parse_args()
     RANDOM_SEED = args.seed
 
@@ -113,7 +123,7 @@ if __name__ == "__main__":
     SAMPLED_IDS_DIR = os.path.join(OUTPUT_DIR, "sampled-ids")
     for filename in os.listdir(CONFERENCE_IDS_DIR):
         with open(os.path.join(CONFERENCE_IDS_DIR, filename)) as ids_file:
-            ids = [l.strip() for l in ids_file.read()]
+            ids = [l.strip() for l in ids_file.readlines()]
 
         # Make the shuffling of IDs for a conference deterministic by combining the user-specified
         # seed with a hash for the conference name.
@@ -127,7 +137,7 @@ if __name__ == "__main__":
         sample = []
         for paper in fetch_paper_details(ids_shuffled, args.min_citation_velocity):
             sample.append(paper)
-            if len(sample) > args.papers_per_conference:
+            if len(sample) >= args.papers_per_conference:
                 break
 
         print(f"Sampled {len(sample)} papers for conference {filename}")

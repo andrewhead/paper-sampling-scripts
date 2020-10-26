@@ -10,30 +10,36 @@ from common import CONFERENCE_IDS_DIR, DATA_DIR, OUTPUT_DIR
 
 @dataclass(frozen=True)
 class Conference:
+    nickname: str
     venue: str
     year: int
 
 
 CONFERENCES = [
-    Conference("NIPS", 2017),
-    Conference("NeurIPS", 2018),
-    Conference("NeurIPS", 2019),
-    Conference("ACL", 2017),
-    Conference("ACL", 2018),
-    Conference("ACL", 2019),
+    Conference("neurips", "NIPS", 2017),
+    Conference("neurips", "NeurIPS", 2018),
+    Conference("neurips", "NeurIPS", 2019),
+    Conference("acl", "ACL", 2017),
+    Conference("acl", "ACL", 2018),
+    Conference("acl", "ACL", 2019),
     Conference(
-        "2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)", 2017
+        "cvpr",
+        "2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)",
+        2017,
     ),
     Conference(
-        "2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition", 2018
+        "cvpr",
+        "2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition",
+        2018,
     ),
     Conference(
+        "cvpr",
         "2019 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)",
         2019,
     ),
-    Conference("ICML", 2017),
-    Conference("ICML", 2018),
-    Conference("ICML", 2019),
+    Conference("icml", "ICML", 2017),
+    Conference("icml", "ICML", 2018),
+    Conference("icml", "ICML", 2019),
 ]
 
 
@@ -61,9 +67,12 @@ def get_papers_by_conference(
                     continue
 
                 paper_id = paper["id"]
-                conference = Conference(paper["venue"], paper["year"])
-                if conference in conferences:
-                    papers_by_conference[conference].append(paper_id)
+                year = paper["year"]
+                venue = paper["venue"]
+                for c in conferences:
+                    if c.venue == venue and c.year == year:
+                        papers_by_conference[c].append(paper_id)
+                        break
 
         print(f"Done reading file {path}.")
 
@@ -88,10 +97,11 @@ if __name__ == "__main__":
 
     for conference, paper_ids in papers_by_conference.items():
         conference_ids_path = os.path.join(
-            CONFERENCE_IDS_DIR, f"{conference.venue}-{conference.year}"
+            CONFERENCE_IDS_DIR, f"{conference.nickname}-{conference.year}"
         )
         print(
-            f"Found {len(paper_ids)} papers for conference {conference.venue} {conference.year}."
+            f"Found {len(paper_ids)} papers for conference '{conference.nickname}' "
+            + f"year {conference.year}."
         )
 
         if len(paper_ids) > 0:
