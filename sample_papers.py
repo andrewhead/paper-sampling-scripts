@@ -1,87 +1,141 @@
-import glob
+import argparse
+import dataclasses
 import json
 import os
 import random
-import re
-from collections import defaultdict
-from typing import Any, Dict, List, Tuple
+import time
+from dataclasses import dataclass
+from typing import Any, Dict, Iterator, List
 
-DATA_DIR = "data"
+import requests
 
-
-# Seed random number generator for replicability
-random.seed(42)
+from .common import CONFERENCE_IDS_DIR, OUTPUT_DIR
 
 
-# Pair of conference nickname and year
-ConferenceId = Tuple[str, int]
+@dataclass(frozen=True)
+class Paper:
+    id_: str
+    title: str
+    arxiv_id: str
+    arxiv_link: str
 
 
-# For every conference in this list, it is expected that the data directory includes either
-# * a file with the name '<conf-name>-<year>.json' or
-# * a series of files with the names '<conf-name>-<year>-<part-number>.json'
-#
-# The data in each of these files was downloaded by going to DBLP and querying
-# the API, and then copying and pasting the output JSON files into the `data/` directory.
-# For instance, a list of papers at ACL in 2017 can be searched with this URL:
-# https://dblp.org/search/publ/api?q=venue%3AACL%3A%20year%3A2017%3A&h=1000&format=json
-# The DBLP API can only return 1000 papers at a time, which is a problem for recent
-# conferences like NeurIPS which have over 1000 papers. For those conferences, data
-# needs to be downloaded in multiple requests. To get the second set of 1000 papers
-# at a conference, at the paging parameter `f=<page-start>` to the query like so:
-# https://dblp.org/search/publ/api?q=venue%3ANeurIPS%3A%20year%3A2019%3A&h=1000&format=json&f=1000
-CONFERENCES: List[ConferenceId] = [
-    ("neurips", 2017),
-    ("neurips", 2018),
-    ("neurips", 2019),
-    ("icml", 2017),
-    ("icml", 2018),
-    ("icml", 2019),
-    ("acl", 2017),
-    ("acl", 2018),
-    ("acl", 2019),
-    ("cvpr", 2017),
-    ("cvpr", 2018),
-    ("cvpr", 2019),
-]
+# Semantic Scholar requests that no more than 100 requests be made to the API every 5 minutes
+# from a single IP address.
+SEMANTIC_SCHOLAR_REQUEST_DELAY = 200  # milliseconds
 
 
-papers: Dict[ConferenceId, List[Any]] = defaultdict(list)
+def fetch_paper_details(
+    ids: List[str], min_citation_velocity: int, verbose: bool = True
+) -> Iterator[Paper]:
+
+    first_request = True
+
+    for id_ in ids:
+
+        if not first_request:
+            time.sleep(SEMANTIC_SCHOLAR_REQUEST_DELAY)
+        if verbose:
+            print(f"Fetching data from Semantic Scholar for paper {id_}.")
+        response = requests.get(f"https://api.semanticscholar.org/v1/paper/{id_}")
+        if first_request:
+            first_request = False
+
+        if response.ok:
+            paper_json = response.json()
+
+            if paper_json["arxivId"] is None:
+                if verbose:
+                    print(
+                        f"Semantic Scholar does not have an arXiv ID for {id_}. "
+                        + "Paper will not be sampled."
+                    )
+                continue
+            if paper_json["citationVelocity"] < min_citation_velocity:
+                if verbose:
+                    print(
+                        f"Paper {id_} has a low citation velocity ({paper_json['citationVelocity']}"
+                        + f"< {min_citation_velocity}). Paper will not be sampled."
+                    )
+                continue
+
+            yield Paper(
+                id_=id_,
+                title=paper_json["title"],
+                arxiv_id=paper_json["arxivId"],
+                arxiv_link=f"https://arxiv.org/pdf/{paper_json['arxivId']}.pdf",
+            )
 
 
-for conference in CONFERENCES:
+if __name__ == "__main__":
 
-    name, year = conference
-    conference_glob = os.path.join(DATA_DIR, f"{name}-{year}*.json")
+    argument_parser = argparse.ArgumentParser(
+        description=(
+            "Sample papers from recent conference proceedings. Chooses those papers that have "
+            + "an arXiv ID and a sufficiently high citation velocity."
+        )
+    )
+    argument_parser.add_argument(
+        "--papers-per-conference",
+        help=(
+            "The number of papers to sample for each conference. Note that the time to run this "
+            + "script will increase linearly with the number of papers to sample, as each paper will "
+            + "require a separate request to the Semantic Scholar API."
+        ),
+        type=int,
+        default=50,
+    )
+    argument_parser.add_argument(
+        "--min-citation-velocity",
+        help="Minimum citation velocity for a paper to be included in the sample.",
+        type=int,
+        default=10,
+    )
+    argument_parser.add_argument(
+        "--seed",
+        default=42,
+        type=int,
+        help=(
+            "Random seed to be used when sampling papers. Set this value to either replicate a "
+            + "sample made previously, or to request a different sample than what was sampled before."
+        ),
+    )
+    argument_parser.add_argument()
+    args = argument_parser.parse_args()
+    RANDOM_SEED = args.seed
 
-    for path in glob.glob(conference_glob):
-        print("Reading conference data from ", path)
+    if not os.path.exists(CONFERENCE_IDS_DIR):
+        raise SystemExit(
+            "No directory found containing lists of IDs of papers at conferences. "
+            + "Run 'extract_papers_for_conferences.py' before this script."
+        )
 
-        with open(path) as file_:
-            data = json.load(file_)
-            papers[(name, year)].extend(data["result"]["hits"]["hit"])
+    SAMPLED_IDS_DIR = os.path.join(OUTPUT_DIR, "sampled-ids")
+    for filename in os.listdir(CONFERENCE_IDS_DIR):
+        with open(os.path.join(CONFERENCE_IDS_DIR, filename)) as ids_file:
+            ids = [l.strip() for l in ids_file.read()]
 
-    num_read = len(papers[(name, year)])
-    print(f"Loaded data for {num_read} papers for conference {name}-{year}")
+        # Make the shuffling of IDs for a conference deterministic by combining the user-specified
+        # seed with a hash for the conference name.
+        random.seed(args.seed * hash(filename))
+        ids_shuffled = list(ids)
+        random.shuffle(ids_shuffled)
 
+        # Samples will not necessarily be exactly the same every time this script is run, because
+        # the data for a paper on Semantic Scholar might change (for instance, the citation
+        # velocity for a paper, or the presence of an arXiv ID for a paper).
+        sample = []
+        for paper in fetch_paper_details(ids_shuffled, args.min_citation_velocity):
+            sample.append(paper)
+            if len(sample) > args.papers_per_conference:
+                break
 
-sample: Dict[ConferenceId, List[Any]] = {}
-PAPERS_PER_CONFERENCE = 10
-
-
-for conference_id, conference_papers in papers.items():
-    sample[conference_id] = random.sample(conference_papers, PAPERS_PER_CONFERENCE)
-
-
-print("")
-for (conference_name, conference_year), conference_sample in sample.items():
-    print(f"Papers sampled for {conference_name}-{conference_year}:")
-    for paper in conference_sample:
-        title = paper["info"]["title"]
-        try:
-            start_page, end_page = [int(_) for _ in paper["info"]["pages"].split("-")]
-            num_pages = end_page - start_page
-            print(f"'{title}' ({num_pages} pages)")
-        except ValueError:
-            print(f"(Error: could not parse number of pages for '{title}')")
-    print("")
+        print(f"Sampled {len(sample)} papers for conference {filename}")
+        if len(sample) > 0:
+            if not os.path.exists(SAMPLED_IDS_DIR):
+                os.makedirs(SAMPLED_IDS_DIR)
+            with open(
+                os.path.join(SAMPLED_IDS_DIR, filename), encoding="utf-8", mode="w"
+            ) as sample_file:
+                for paper in sample:
+                    sample_file.write(json.dumps(dataclasses.asdict(paper)) + "\n")
