@@ -5,7 +5,7 @@ import os.path
 from dataclasses import dataclass
 from typing import Dict, List
 
-from .common import CONFERENCE_IDS_DIR, DATA_DIR, OUTPUT_DIR
+from common import CONFERENCE_IDS_DIR, DATA_DIR, OUTPUT_DIR
 
 
 @dataclass(frozen=True)
@@ -15,15 +15,22 @@ class Conference:
 
 
 CONFERENCES = [
-    Conference("NeurIPS", 2017),
+    Conference("NIPS", 2017),
     Conference("NeurIPS", 2018),
     Conference("NeurIPS", 2019),
     Conference("ACL", 2017),
     Conference("ACL", 2018),
     Conference("ACL", 2019),
-    Conference("CVPR", 2017),
-    Conference("CVPR", 2018),
-    Conference("CVPR", 2019),
+    Conference(
+        "2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)", 2017
+    ),
+    Conference(
+        "2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition", 2018
+    ),
+    Conference(
+        "2019 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)",
+        2019,
+    ),
     Conference("ICML", 2017),
     Conference("ICML", 2018),
     Conference("ICML", 2019),
@@ -40,17 +47,25 @@ def get_papers_by_conference(
     papers_by_conference: Dict[Conference, List[PaperId]] = {c: [] for c in conferences}
 
     for path in corpus_file_paths:
+        print(f"Reading entries in file {path}...")
         with gzip.open(path, "rb") as corpus_file:
 
             for line in corpus_file:
                 paper = json.loads(line.strip())
-                if paper["venue"] == "" or paper["year"] == "":
+                if (
+                    "venue" not in paper
+                    or paper["venue"] == ""
+                    or "year" not in paper
+                    or paper["year"] == ""
+                ):
                     continue
 
                 paper_id = paper["id"]
                 conference = Conference(paper["venue"], paper["year"])
                 if conference in conferences:
                     papers_by_conference[conference].append(paper_id)
+
+        print(f"Done reading file {path}.")
 
     return papers_by_conference
 
