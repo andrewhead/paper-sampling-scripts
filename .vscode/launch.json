@@ -22,7 +22,17 @@
                 "--min-citation-velocity",
                 "10",
                 "--papers-per-conference",
-                "2"
+                "10"
+            ]
+        },
+        {
+            "name": "Get arXiv IDs for sampled papers",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/get_sampled_arxiv_ids.py",
+            "args": [
+                "${workspaceFolder}/output/sampled-ids/*",
+                "--conference-comments",
             ]
         }
     ]

@@ -9,7 +9,7 @@ from typing import Any, Dict, Iterator, List
 
 import requests
 
-from common import CONFERENCE_IDS_DIR, OUTPUT_DIR
+from common import CONFERENCE_IDS_DIR, OUTPUT_DIR, SAMPLED_IDS_DIR
 
 
 @dataclass(frozen=True)
@@ -22,7 +22,7 @@ class Paper:
 
 # Semantic Scholar requests that no more than 100 requests be made to the API every 5 minutes
 # from a single IP address.
-SEMANTIC_SCHOLAR_REQUEST_DELAY = 0.2  # seconds
+SEMANTIC_SCHOLAR_REQUEST_DELAY = 3  # seconds
 
 
 def fetch_paper_details(
@@ -120,7 +120,6 @@ if __name__ == "__main__":
             + "Run 'extract_papers_for_conferences.py' before this script."
         )
 
-    SAMPLED_IDS_DIR = os.path.join(OUTPUT_DIR, "sampled-ids")
     for filename in os.listdir(CONFERENCE_IDS_DIR):
         with open(os.path.join(CONFERENCE_IDS_DIR, filename)) as ids_file:
             ids = [l.strip() for l in ids_file.readlines()]
